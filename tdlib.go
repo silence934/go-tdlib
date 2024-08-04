@@ -30,7 +30,7 @@ type UpdateMsg struct {
 }
 
 // EventFilterFunc used to filter out unwanted messages in receiver channels
-type EventFilterFunc func(msg *TdMessage) bool
+type EventFilterFunc func(msg TdMessage) bool
 
 // EventReceiver used to retreive updates from tdlib to user
 type EventReceiver struct {
@@ -125,7 +125,7 @@ func NewClient(config Config) *Client {
 							if err != nil {
 								fmt.Printf("Error unmarhaling to type %v", err)
 							}
-							if receiver.FilterFunc(&newMsg) {
+							if receiver.FilterFunc(newMsg) {
 								receiver.Chan <- newMsg
 							}
 						}

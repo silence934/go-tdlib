@@ -6319,11 +6319,11 @@ func (messageInteractionInfo *MessageInteractionInfo) MessageType() string {
 // UnmarshalJSON unmarshal to json
 func (messageReplyInfo *MessageReplyInfo) UnmarshalJSON(data []byte) error {
 	var tmp struct {
-		ReplyCount              int32             `json:"reply_count"`
+		ReplyCount              int32              `json:"reply_count"`
 		RecentRepliers          []*json.RawMessage `json:"recent_repliers"`
-		LastReadInboxMessageId  int64             `json:"last_read_inbox_message_id"`
-		LastReadOutboxMessageId int64             `json:"last_read_outbox_message_id"`
-		LastMessageId           int64             `json:"last_message_id"`
+		LastReadInboxMessageId  int64              `json:"last_read_inbox_message_id"`
+		LastReadOutboxMessageId int64              `json:"last_read_outbox_message_id"`
+		LastMessageId           int64              `json:"last_message_id"`
 	}
 
 	err := json.Unmarshal(data, &tmp)
@@ -6424,7 +6424,7 @@ func (messageSendingStateFailed *MessageSendingStateFailed) GetMessageSendingSta
 type Message struct {
 	tdCommon
 	ID                      int64                   `json:"id"`                           // Message identifier; unique for the chat to which the message belongs
-	Sender                  MessageSender           `json:"sender"`                       // The sender of the message
+	Sender                  MessageSender           `json:"sender_id"`                    // The sender of the message
 	ChatID                  int64                   `json:"chat_id"`                      // Chat identifier
 	SendingState            MessageSendingState     `json:"sending_state"`                // Information about the sending state of the message; may be null
 	SchedulingState         MessageSchedulingState  `json:"scheduling_state"`             // Information about the scheduling state of the message; may be null
