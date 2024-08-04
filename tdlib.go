@@ -1,14 +1,12 @@
 package tdlib
 
-//#cgo linux CFLAGS: -I/usr/local/include
-//#cgo darwin CFLAGS: -I/usr/local/include
-//#cgo windows CFLAGS: -IC:/src/td -IC:/src/td/build
-//#cgo linux LDFLAGS: -L/usr/local/lib -ltdjson_static -ltdjson_private -ltdclient -ltdcore -ltdapi -ltdactor -ltddb -ltdsqlite -ltdnet -ltdutils -lc++ -lssl -lcrypto -ldl -lz -lm
-//#cgo darwin LDFLAGS: -L/usr/local/lib -L/usr/local/opt/openssl/lib -ltdjson_static -ltdjson_private -ltdclient -ltdcore -ltdapi -ltdactor -ltddb -ltdsqlite -ltdnet -ltdutils -lc++ -lssl -lcrypto -ldl -lz -lm
-//#cgo windows LDFLAGS: -LC:/src/td/build/Debug -ltdjson
-//#include <stdlib.h>
-//#include <td/telegram/td_json_client.h>
-//#include <td/telegram/td_log.h>
+/*
+#cgo CXXFLAGS: -std=c++11 -I/usr/local/include
+#cgo LDFLAGS: -ltdjson -L/usr/local/lib -Wl,-rpath,/usr/local/lib
+#include <stdlib.h>
+#include <td/telegram/td_json_client.h>
+#include <td/telegram/td_log.h>
+*/
 import "C"
 
 import (
@@ -54,7 +52,7 @@ type Client struct {
 
 // Config holds tdlibParameters
 type Config struct {
-	APIID              string // Application identifier for Telegram API access, which can be obtained at https://my.telegram.org   --- must be non-empty..
+	APIID              int    // Application identifier for Telegram API access, which can be obtained at https://my.telegram.org   --- must be non-empty..
 	APIHash            string // Application identifier hash for Telegram API access, which can be obtained at https://my.telegram.org  --- must be non-empty..
 	SystemLanguageCode string // IETF language tag of the user's operating system language; must be non-empty.
 	DeviceModel        string // Model of the device the application is being run on; must be non-empty.
@@ -322,25 +320,22 @@ func (client *Client) Authorize() (AuthorizationState, error) {
 
 func (client *Client) sendTdLibParams() {
 	client.Send(UpdateData{
-		"@type": "setTdlibParameters",
-		"parameters": UpdateData{
-			"@type":                    "tdlibParameters",
-			"use_test_dc":              client.Config.UseTestDataCenter,
-			"database_directory":       client.Config.DatabaseDirectory,
-			"files_directory":          client.Config.FileDirectory,
-			"use_file_database":        client.Config.UseFileDatabase,
-			"use_chat_info_database":   client.Config.UseChatInfoDatabase,
-			"use_message_database":     client.Config.UseMessageDatabase,
-			"use_secret_chats":         client.Config.UseSecretChats,
-			"api_id":                   client.Config.APIID,
-			"api_hash":                 client.Config.APIHash,
-			"system_language_code":     client.Config.SystemLanguageCode,
-			"device_model":             client.Config.DeviceModel,
-			"system_version":           client.Config.SystemVersion,
-			"application_version":      client.Config.ApplicationVersion,
-			"enable_storage_optimizer": client.Config.EnableStorageOptimizer,
-			"ignore_file_names":        client.Config.IgnoreFileNames,
-		},
+		"@type":                    "setTdlibParameters",
+		"use_test_dc":              client.Config.UseTestDataCenter,
+		"database_directory":       client.Config.DatabaseDirectory,
+		"files_directory":          client.Config.FileDirectory,
+		"use_file_database":        client.Config.UseFileDatabase,
+		"use_chat_info_database":   client.Config.UseChatInfoDatabase,
+		"use_message_database":     client.Config.UseMessageDatabase,
+		"use_secret_chats":         client.Config.UseSecretChats,
+		"api_id":                   client.Config.APIID,
+		"api_hash":                 client.Config.APIHash,
+		"system_language_code":     client.Config.SystemLanguageCode,
+		"device_model":             client.Config.DeviceModel,
+		"system_version":           client.Config.SystemVersion,
+		"application_version":      client.Config.ApplicationVersion,
+		"enable_storage_optimizer": client.Config.EnableStorageOptimizer,
+		"ignore_file_names":        client.Config.IgnoreFileNames,
 	})
 }
 
